@@ -1,12 +1,18 @@
 const Koa = require('koa')
 
+const Article = require('./models/article')
+
 const app = new Koa()
 
 app.use(async (ctx, next) => {
   await next()
   console.log('ctx.request:', ctx.request)
-  ctx.response.type = 'text/html'
-  ctx.response.body = '<h1>Hello, Koa2!</h1>'
+  var result;
+  await Article.find((err, _result) => {
+    result = _result;
+    console.log(result);
+  });
+  ctx.response.body = result;
 })
 
 app.listen(8877)
